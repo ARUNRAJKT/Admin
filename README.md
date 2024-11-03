@@ -68,3 +68,5 @@ Integrating Chart.js with dynamic data required a good understanding of how to m
 
 Modal conditional rendering:
 Implementing conditional rendering for modals posed some challenges. To streamline the user experience for adding and editing data, I adopted a strategy of creating two separate modals. This approach, while effective, required careful management of state and props to ensure each modal functioned correctly based on user actions.
+
+ -------------------------------------- Thank you---------------------------------------------
