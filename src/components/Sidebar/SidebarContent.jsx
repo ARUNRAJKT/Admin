@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import SideItem from './SidebarItems'; // Ensure this component is correctly implemented
-import { LinkItems } from '../../utilits/constant'; // Ensure this file exports an array of link items
-// import { useUserContext } from '../context/user_context'; // Uncomment and use if user context is implemented
+import SideItem from './SidebarItems'; 
+import { LinkItems } from '../../utilits/constant'; 
 import logo from '../../assests/logo.png'; 
 import {
   Box,
@@ -24,13 +23,13 @@ export default function SidebarContent({ onClose, ...rest }) {
   return (
     <Box
       transition='0.3s ease'
-      bg={useColorModeValue('gray.800', 'gray.900')} // Light mode and dark mode backgrounds
+      bg={useColorModeValue('gray.800', 'gray.900')}
       borderRight='1px'
       borderRightColor={useColorModeValue('gray.700', 'gray.600')}
       w={{ base: 'full', md: 60 }}
       pos='fixed'
       h='full'
-      color={useColorModeValue('gray.100', 'gray.200')} // Light mode and dark mode text color
+      color={useColorModeValue('gray.100', 'gray.200')}
       fontFamily='Arial, sans-serif' 
       {...rest}
     >

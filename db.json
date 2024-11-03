@@ -1,12 +1,11 @@
 {
   "users": [
     {
-      "id": "1",
       "name": "John Doe",
       "email": "john.doe@example.com",
       "role": "user",
-      "createdAt": "2024-09-20T14:30:00Z",
-      "updatedAt": "2024-09-20T14:30:00Z"
+      "updatedAt": "2024-11-03T07:38:58.670Z",
+      "id": "1"
     },
     {
       "id": "2",
@@ -73,30 +72,48 @@
       "updatedAt": "2024-09-01T09:30:00Z"
     },
     {
-      "id": "aa5c",
-      "name": "as",
-      "email": "",
+      "name": "arunraj",
+      "email": "sasf@gmail.com",
+      "role": "user",
+      "updatedAt": "2024-11-03T07:39:04.258Z",
+      "id": "a98d"
+    },
+    {
+      "name": "random",
+      "email": "random@gmail.com",
+      "role": "user",
+      "updatedAt": "2024-11-03T07:39:10.135Z",
+      "id": "b1e1"
+    },
+    {
+      "id": "1efc",
+      "name": "John Doe",
+      "email": "john.doe@example.com",
       "role": "user"
     },
     {
-      "id": "a98d",
-      "name": "arunraj",
-      "email": "sasf@gmail.com",
-      "role": "admin"
+      "id": "d7d2",
+      "name": "no namea",
+      "email": "no@gmail.com",
+      "role": "user",
+      "createdAt": "2024-11-03T07:31:01.754Z",
+      "updatedAt": "2024-11-03T07:31:01.754Z"
     },
     {
-      "id": "b1e1",
-      "name": "random",
-      "email": "random@gmail.com",
-      "role": "admin"
+      "id": "db39",
+      "name": "joker",
+      "email": "joker@gmail.com",
+      "role": "user",
+      "createdAt": "2024-11-03T07:31:17.537Z",
+      "updatedAt": "2024-11-03T07:31:17.537Z"
     },
     {
-      "id": "b691",
-      "name": "sfsdfsa",
-      "email": "adsasdas@gmail.com",
-      "role": "admin",
-      "createdAt": "2024-11-03T06:02:40.201Z",
-      "updatedAt": "2024-11-03T06:02:40.201Z"
+      "id": "ec14",
+      "name": "Luke",
+      "email": "luke@gmail.com",
+      "role": "user",
+      "createdAt": "2024-11-03T07:45:26.734Z",
+      "updatedAt": "2024-11-03T07:45:26.734Z"
     }
   ]
 }

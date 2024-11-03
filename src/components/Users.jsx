@@ -17,6 +17,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import UserModal from './UserModal';
+import AddModal from './AddModal'; 
 import './Users.css';
 
 export default function Users() {
@@ -33,22 +34,25 @@ export default function Users() {
   const [currentUser, setCurrentUser] = useState(null);
   const [updatedName, setUpdatedName] = useState('');
   const [updatedEmail, setUpdatedEmail] = useState('');
-  const [updatedRole, setUpdatedRole] = useState('');
+  const [updatedRole, setUpdatedRole] = useState('user');
 
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
+      setError(null);
       try {
         const response = await axios.get('http://localhost:3000/users');
-        setUsers(response.data || []);
-        setFilteredUsers(response.data || []);
+        const usersData = response.data || [];
+        setUsers(usersData);
+        setFilteredUsers(usersData);
+        // console.log("Data Retrived",usersData)
       } catch (err) {
-        setError(err.message);
+        setError("Failed to fetch users. Please try again later.");
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchUsers();
   }, []);
 
@@ -68,8 +72,8 @@ export default function Users() {
     setLoading(true);
     try {
       await axios.delete(`http://localhost:3000/users/${userId}`);
-      setUsers(users.filter(user => user._id !== userId));
-      setFilteredUsers(filteredUsers.filter(user => user._id !== userId));
+      setUsers(users.filter(user => user.id !== userId));
+      setFilteredUsers(filteredUsers.filter(user => user.id !== userId));
       toast({
         position: 'top',
         description: 'User deleted',
@@ -77,6 +81,7 @@ export default function Users() {
         duration: 5000,
         isClosable: true,
       });
+      // console.log("User Deleted")
     } catch (error) {
       toast({
         position: 'top',
@@ -85,7 +90,7 @@ export default function Users() {
         duration: 5000,
         isClosable: true,
       });
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -97,19 +102,23 @@ export default function Users() {
     setUpdatedEmail(user.email);
     setUpdatedRole(user.role);
     setEditModalOpen(true);
-    setAddModalOpen(false); // Ensure add modal is closed
   };
 
   const handleUpdateUser = async () => {
     setLoading(true);
     try {
-      await axios.put(`http://localhost:3000/users/${currentUser._id}`, {
-        name: updatedName,
-        email: updatedEmail,
+      await axios.put(`http://localhost:3000/users/${currentUser.id}`, { 
+        name: updatedName, 
+        email: updatedEmail, 
         role: updatedRole,
+        updatedAt: new Date().toISOString(), 
       });
-      setUsers(users.map(user => (user._id === currentUser._id ? { ...user, name: updatedName, email: updatedEmail, role: updatedRole } : user)));
-      setFilteredUsers(filteredUsers.map(user => (user._id === currentUser._id ? { ...user, name: updatedName, email: updatedEmail, role: updatedRole } : user)));
+      setUsers(users.map(user => 
+        (user.id === currentUser.id ? { ...user, name: updatedName, email: updatedEmail, role: updatedRole, updatedAt: new Date().toISOString() } : user)
+      ));
+      setFilteredUsers(filteredUsers.map(user => 
+        (user.id === currentUser.id ? { ...user, name: updatedName, email: updatedEmail, role: updatedRole, updatedAt: new Date().toISOString() } : user)
+      ));
       toast({
         position: 'top',
         description: 'User updated successfully',
@@ -126,27 +135,27 @@ export default function Users() {
         duration: 5000,
         isClosable: true,
       });
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const openDetailsModal = (user) => {
     setCurrentUser(user);
     setDetailsModalOpen(true);
-    setAddModalOpen(false);
   };
 
   const handleAddUser = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:3000/users', {
-        name: updatedName,
-        email: updatedEmail,
+      const response = await axios.post('http://localhost:3000/users', { 
+        name: updatedName, 
+        email: updatedEmail, 
         role: updatedRole,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(), 
+        updatedAt: new Date().toISOString()  
       });
       setUsers([...users, response.data]);
       setFilteredUsers([...filteredUsers, response.data]);
@@ -160,7 +169,7 @@ export default function Users() {
       setAddModalOpen(false);
       setUpdatedName('');
       setUpdatedEmail('');
-      setUpdatedRole('');
+      setUpdatedRole('user');
     } catch (error) {
       toast({
         position: 'top',
@@ -169,7 +178,7 @@ export default function Users() {
         duration: 5000,
         isClosable: true,
       });
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -184,13 +193,7 @@ export default function Users() {
           onChange={handleSearchChange}
           maxW='300px'
         />
-        <Button colorScheme='teal' onClick={() => {
-          setUpdatedName('');
-          setUpdatedEmail('');
-          setUpdatedRole('');
-          setAddModalOpen(true);
-          setEditModalOpen(false); // Ensure edit modal is closed
-        }}>
+        <Button colorScheme='teal' onClick={() => setAddModalOpen(true)}>
           Add New User
         </Button>
       </HStack>
@@ -214,9 +217,9 @@ export default function Users() {
           </Thead>
           <Tbody>
             {filteredUsers.map(user => {
-              const { _id, name, role } = user;
+              const { id, name, role, createdAt, updatedAt } = user;
               return (
-                <Tr key={_id} className="glass">
+                <Tr key={id} className="glass">
                   <Td onClick={() => openDetailsModal(user)} style={{ cursor: 'pointer' }}>{name}</Td>
                   <Td onClick={() => openDetailsModal(user)} style={{ cursor: 'pointer' }}>
                     <Badge>{role}</Badge>
@@ -233,7 +236,7 @@ export default function Users() {
                       <Button
                         variant='outline'
                         colorScheme='red'
-                        onClick={() => handleDelete(_id)}
+                        onClick={() => handleDelete(id)}
                       >
                         Delete
                       </Button>
@@ -270,11 +273,9 @@ export default function Users() {
       />
 
       {/* Add User Modal */}
-      <UserModal
+      <AddModal
         isOpen={isAddModalOpen}
         onClose={() => setAddModalOpen(false)}
-        user={null}
-        isEditMode={true}
         onSave={handleAddUser}
         updatedName={updatedName}
         setUpdatedName={setUpdatedName}

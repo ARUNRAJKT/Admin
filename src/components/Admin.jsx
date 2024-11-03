@@ -6,8 +6,11 @@ import {
   Spinner,
   HStack,
   useToast,
-  Button,
+  VStack,
+  Divider,
+  useBreakpointValue,
 } from '@chakra-ui/react';
+import './Admin.css';
 
 export default function Admin() {
   const [adminDetails, setAdminDetails] = useState(null);
@@ -19,8 +22,9 @@ export default function Admin() {
     const fetchAdminDetails = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:3000/users'); // Adjust the endpoint for admin details
-        setAdminDetails(response.data);
+        const response = await axios.get('http://localhost:3000/users');
+        const adminUser = response.data.find(user => user.role === 'admin');
+        setAdminDetails(adminUser || null);
       } catch (err) {
         setError(err.message);
         toast({
@@ -39,7 +43,16 @@ export default function Admin() {
   }, [toast]);
 
   return (
-    <Box p={5} bg='white' shadow='lg' borderRadius='lg'>
+    <Box 
+      className="glass-effect" 
+      p={5} 
+      bg='rgba(255, 255, 255, 0.3)' 
+      shadow='lg' 
+      borderRadius='lg' 
+      maxW='600px' 
+      mx='auto' 
+      mt={10}
+    >
       {loading ? (
         <HStack my={8} alignItems='center' justifyContent='center'>
           <Spinner size='lg' color='blue.500' />
@@ -49,19 +62,20 @@ export default function Admin() {
           <Text color='red.500'>{error}</Text>
         </HStack>
       ) : adminDetails ? (
-        <Box>
+        <VStack spacing={4} align='start'>
           <Text fontSize='2xl' fontWeight='bold'>Admin Details</Text>
-          <Text mt={2}><strong>Name:</strong> {adminDetails.name}</Text>
+          <Divider />
+          <Text><strong>Name:</strong> {adminDetails.name}</Text>
           <Text><strong>Email:</strong> {adminDetails.email}</Text>
           <Text><strong>Role:</strong> {adminDetails.role}</Text>
-          <Text><strong>Phone:</strong> {adminDetails.phone || 'N/A'}</Text>
-          <Text><strong>Address:</strong> {adminDetails.address || 'N/A'}</Text>
-          
-          <HStack mt={4}>
-            <Button colorScheme='teal'>Edit Admin Details</Button>
-            <Button colorScheme='red'>Delete Admin</Button>
-          </HStack>
-        </Box>
+          <Text>
+            <strong>Created At:</strong> {adminDetails.createdAt ? new Date(adminDetails.createdAt).toLocaleString() : 'N/A'}
+          </Text>
+          <Text>
+            <strong>Updated At:</strong> {adminDetails.updatedAt ? new Date(adminDetails.updatedAt).toLocaleString() : 'N/A'}
+          </Text>
+          <Divider />
+        </VStack>
       ) : (
         <Text>No admin details available.</Text>
       )}

@@ -10,10 +10,10 @@ import { Line } from "react-chartjs-2";
 import { Chart, registerables } from 'chart.js';
 import axios from "axios";
 
-// Register all components
+
 Chart.register(...registerables);
 
-const API_URL = "http://localhost:3000/users"; // Adjust as necessary
+const API_URL = "http://localhost:3000/users"; 
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
@@ -30,7 +30,6 @@ export default function Dashboard() {
         console.error("Error fetching users:", error);
       }
     };
-
     fetchUsers();
   }, [users]);
 
@@ -93,6 +92,10 @@ export default function Dashboard() {
       },
       y: {
         title: { display: true, text: 'Number of User Registrations' },
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1, 
+        },
       },
     },
   };

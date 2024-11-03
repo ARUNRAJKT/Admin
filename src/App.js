@@ -1,10 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AdminLayout from "./layout/adminHome";
-import Dashboard from "./components/Dashboard";
-import Users from "./components/Users";
-import Admin from "./components/Admin";
-
+import AdminLayout from "./layout/adminHome"; 
+import Dashboard from "./components/Dashboard"; 
+import Users from "./components/Users"; 
+import Admin from "./components/Admin"; 
 function App() {
   return (
     <Router>

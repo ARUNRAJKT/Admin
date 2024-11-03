@@ -16,7 +16,8 @@ export default function AdminHome() {
       >
         <Navbar />
         <Box p={4}>
-          <Outlet />  
+      
+          <Outlet  />  
         </Box>
       </Box>
     </Box>
